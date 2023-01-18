@@ -1,25 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Button,
   Text,
   TextInput,
   View,
   ScrollView,
   Image,
-  Dimensions,
   FlatList,
-  SectionList,
   StyleSheet,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import {Icon} from 'react-native-elements';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const apiUrl = DeviceInfo.isEmulator()
+  ? Platform.OS === 'android'
+    ? 'http://10.0.2.2:5000'
+    : 'http://127.0.0.1:5000'
+  : 'deployed api url goes here';
 
 const accentColor = '#920918';
 
@@ -189,10 +191,7 @@ function Home({navigation}) {
       if (!query) {
         return;
       }
-      const response = await fetch(
-        `http://127.0.0.1:5000/search?query=${query}`,
-        // `http://10.0.2.2:5000/search?query=${query}`, // android
-      );
+      const response = await fetch(`${apiUrl}/search?query=${query}`);
       const json = await response.json();
       setSearchResults(json);
       navigation.navigate('SearchResultsView', json);
@@ -330,10 +329,7 @@ function RecipeView({navigation, route}) {
         if (!this.link) {
           return;
         }
-        const response = await fetch(
-          `http://127.0.0.1:5000/scraper?url=${this.link}`,
-          // `http://10.0.2.2:5000/scraper?url=${this.link}`, //android
-        );
+        const response = await fetch(`${apiUrl}/scraper?url=${this.link}`);
         const json = await response.json();
         setRecipeData(json);
         this.data = json;
