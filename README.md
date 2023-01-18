@@ -28,6 +28,37 @@
 
 - google search api free plan has a daily quota of 100 requests
 
+## How to run
+
+### API
+
+```bash
+#Prepare environment
+cd scraper
+python -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+
+#Create .env file in scraper dir containing env vars:
+printf '%s\n' 'google_search_api_key=xxxx' 'google_search_api_id=xxxx.' > .env
+
+#Run API:
+python main.py
+```
+
+### React native
+
+```bash
+#Install dependencies:
+cd recipeFinder
+npm i
+
+#Run the app using iOS/Android simulator:
+npm run ios
+#or
+npm run android
+```
+
 ## Disclaimers
 
 - this project is made for educational purposes
